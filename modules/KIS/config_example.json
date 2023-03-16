@@ -1,0 +1,12 @@
+{   
+    "UserConfig": {
+        "APP_KEY": "", 
+        "APP_SECRET": "", 
+        "ACCESS_TOKEN": "", 
+        "ACCESS_TOKEN_EXPIRE": "20230317193434"
+    }, 
+    "URL": {
+        "URL_BASE": "https://openapi.koreainvestment.com:9443", 
+        "INQUIRE_TIME_ITEMCHARTPRICE": "/uapi/domestic-stock/v1/quotations/inquire-time-itemchartprice"
+    }
+}
