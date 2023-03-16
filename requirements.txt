@@ -2,3 +2,7 @@ altair
 pandas
 streamlit
 extra_streamlit_components
+openpyxl
+finance-datareader
+bs4
+plotly
