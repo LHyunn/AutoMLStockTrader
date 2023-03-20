@@ -17,15 +17,20 @@ def set_config():
     )
     
 def init_session():
-    with st.expander("인증 정보"):
+    with st.expander("KIS 인증 및 종목코드 업데이트"):
         if kis.Auth().auth_result:
             st.success("KIS 인증에 성공하였습니다.")
             pass
         else:
             st.error("KIS 인증에 실패하였습니다. 관리자에게 문의하세요.")
-            return False
+            pass
         
-        if 
+        if kis.update_stock_code():
+            st.success("종목코드 업데이트에 성공하였습니다.")
+            pass
+        else:
+            st.error("종목코드 업데이트에 실패하였습니다. 관리자에게 문의하세요.")
+            pass
         
     
     
