@@ -1,5 +1,5 @@
 import streamlit as st
-from .KIS import auth
+from .KIS import public_api as kis
 
 
 def set_config():
@@ -17,9 +17,18 @@ def set_config():
     )
     
 def init_session():
-    auth_token = auth.auth_kis()
-    if 'key' not in st.session_state:
-        st.session_state.key = auth_token
+    with st.expander("인증 정보"):
+        if kis.Auth().auth_result:
+            st.success("KIS 인증에 성공하였습니다.")
+            pass
+        else:
+            st.error("KIS 인증에 실패하였습니다. 관리자에게 문의하세요.")
+            return False
+        
+        if 
+        
+    
+    
 
     
     

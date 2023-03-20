@@ -9,8 +9,9 @@ from modules.KIS import *
 
 if __name__ == "__main__":
     config.set_config()
+    st.title("AutoML Stock Model Platform")
     config.init_session()
     
-    st.title("AutoML Stock Model Platform")
+    
     
     
