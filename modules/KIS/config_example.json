@@ -1,7 +1,7 @@
 {
     "UserConfig": {
-        "APP_KEY": "PS3RGjPgZhiW28Tq89ba75qkGPCiUGp0b6kf",
-        "APP_SECRET": "oDe/hWTSx8CL7OP/tLhI8UMiPwNyumhXHnfd3iatGDNqB/N1vfSdSldqFAxD3CHd9rhZIjkafOSPIzVi48vmdMrweaGOMVvkao8kam12pCGcYd5pkVGUiZhW8A969j6FiJNVj1zkLYsILfB6gbot+jf9ZBdshzbR5F+f3XfEzB5EGyl9+wU=",
+        "APP_KEY": "",
+        "APP_SECRET": "",
         "ACCESS_TOKEN": "",
         "ACCESS_TOKEN_EXPIRE": "20230317193434"
     },
