@@ -25,8 +25,7 @@ class Public_API:
                     "appkey" : self.APP_KEY,
                     "appsecret" : self.APP_SECRET
                     }
-                PATH = self.CONFIG["URL"]["접근토큰발급(P)"]
-                URL = f"{PATH}"
+                URL = self.CONFIG["URL"]["접근토큰발급(P)"]
                 res = requests.post(URL, headers=headers, data=json.dumps(body))
                 ACCESS_TOKEN = res.json()["access_token"]
                 ACCESS_TOKEN_EXPIRE = datetime.datetime.strftime(datetime.datetime.now() + datetime.timedelta(days=1), "%Y%m%d%H%M%S")
@@ -40,22 +39,39 @@ class Public_API:
         else:
             return True
         
-    def 국내주식기간별시세(self, stock_code, start_date, end_date):
+    def 국내주식기간별시세(self, stock_code, start_date, end_date, period_div_code="D"):
         try:
-            headers = {"content-type":"application/json"}
-            body = {
-                    "appkey" : self.APP_KEY,
-                    "appsecret" : self.APP_SECRET
-                }
-            PATH = self.CONFIG["URL"]["국내주식기간별시세(일/주/월/년)"]
-            URL = f"{PATH}"
-            res = requests.post(URL, headers=headers, data=json.dumps(body))
-            ACCESS_TOKEN = res.json()["access_token"]
-            ACCESS_TOKEN_EXPIRE = datetime.datetime.strftime(datetime.datetime.now() + datetime.timedelta(days=1), "%Y%m%d%H%M%S")
-            self.CONFIG["UserConfig"]["ACCESS_TOKEN"] = ACCESS_TOKEN
-            self.CONFIG["UserConfig"]["ACCESS_TOKEN_EXPIRE"] = ACCESS_TOKEN_EXPIRE
-            with open(os.path.join(os.path.dirname(__file__), "config.json"), "w") as f:
-                json.dump(self.CONFIG, f, ensure_ascii=False, indent=4)
+            headers = {
+                "content-type" : "application/json",
+                "authorization" : self.ACCESS_TOKEN,
+                "appkey" : self.APP_KEY,
+                "appsecret" : self.APP_SECRET,
+                "tr_id" : "FHKST03010100",
+                "custtype" : "P"
+            }
+            
+            query = {
+                "FID_COND_MRKT_DIV_CODE" : "J",
+                "FID_INPUT_ISCD" : stock_code,
+                "FID_INPUT_DATE_1" : start_date,
+                "FID_INPUT_DATE_2" : end_date,
+                "FID_PERIOD_DIV_CODE" : period_div_code,
+                "FID_ORG_ADJ_PRC" : "0"
+            }
+            
+            res = (requests.post(self.CONFIG["URL"]["국내주식기간별시세(일/주/월/년)"], headers=headers, data=json.dumps(query))).json()
+            if res["rt_cd"] == "0":
+                pass
+                
+                
+            
+
+    
+            
+                
+                
+            
+            
             return True
         except:
             return False
