@@ -1,5 +1,6 @@
 import streamlit as st
 from .KIS import public_api as kis
+import datetime
 
 
 def set_config():
@@ -17,9 +18,9 @@ def set_config():
     )
     
 def init_session():
-    with st.expander("KIS 인증 및 종목코드 업데이트"):
-        if kis.Auth().auth_result:
-            st.success("KIS 인증에 성공하였습니다.")
+    with st.expander(f"KIS 인증 및 종목코드 업데이트 - {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}"):
+        if kis.Public_API().auth_result:
+            st.success(f"KIS 인증에 성공하였습니다.")
             pass
         else:
             st.error("KIS 인증에 실패하였습니다. 관리자에게 문의하세요.")

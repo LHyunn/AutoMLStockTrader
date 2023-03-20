@@ -11,14 +11,13 @@ import pandas as pd
 
 
 
-class Auth:
+class Public_API:
     def __init__(self):
         self.CONFIG = json.load(open(os.path.join(os.path.dirname(__file__), "config.json"), "r"))
         self.ACCESS_TOKEN = self.CONFIG["UserConfig"]["ACCESS_TOKEN"]
         self.ACCESS_TOKEN_EXPIRE = self.CONFIG["UserConfig"]["ACCESS_TOKEN_EXPIRE"]
         self.APP_KEY = self.CONFIG["UserConfig"]["APP_KEY"]
         self.APP_SECRET = self.CONFIG["UserConfig"]["APP_SECRET"]
-        self.URL = self.CONFIG["URL"]["접근토큰발급(P)"]
         self.auth_result = self.auth_kis()
         
     def auth_kis(self):
@@ -45,9 +44,10 @@ class Auth:
         else:
             return True
         
-class Public_API:
-    pass
 
+def get_stock_data():
+    df = pd.read_csv(f"/app/modules/KIS/Data/kospi_stock_info_{datetime.datetime.now().strftime('%Y%m%d')}.csv", encoding="utf-8")
+    return df
 
 def update_stock_code(verbose=False):
     if os.path.exists(f"/app/modules/KIS/Data/kospi_stock_info_{datetime.datetime.now().strftime('%Y%m%d')}.csv"):
