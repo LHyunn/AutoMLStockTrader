@@ -3,12 +3,11 @@ import pandas as pd
 import plotly.figure_factory as ff
 import plotly.graph_objects as go
 import plotly.express as px
-from modules.KIS import public_api as kis
+from modules.KIS import public_api, stock
 import FinanceDataReader as fdr
 
 st.markdown("# 📈Chart")
-stock_df = kis.get_stock_data()
-stock_code_list = stock_df["단축코드"]
+stock_code_list = stock.get_stock_list()
 stock_code = st.selectbox("종목코드", stock_code_list)
 
 if st.button("조회"):

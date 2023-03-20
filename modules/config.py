@@ -1,5 +1,5 @@
 import streamlit as st
-from .KIS import public_api as kis
+from .KIS import public_api, stock
 import datetime
 
 
@@ -19,18 +19,25 @@ def set_config():
     
 def init_session():
     with st.expander(f"KIS 인증 및 종목코드 업데이트 - {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}"):
-        if kis.Public_API().auth_result:
-            st.success(f"KIS 인증에 성공하였습니다.")
+        if public_api.Public_API().auth_result:
+            st.success("KIS 인증에 성공하였습니다.")
             pass
         else:
-            st.error("KIS 인증에 실패하였습니다. 관리자에게 문의하세요.")
+            st.error("KIS 인증에 실패하였습니다.")
             pass
         
-        if kis.update_stock_code():
-            st.success("종목코드 업데이트에 성공하였습니다.")
+        if stock.update_kospi_stock_code():
+            st.success("코스피 상장 종목 업데이트에 성공하였습니다.")
             pass
         else:
-            st.error("종목코드 업데이트에 실패하였습니다. 관리자에게 문의하세요.")
+            st.error("코스피 상장 종목 업데이트에 실패하였습니다.")
+            pass
+        
+        if stock.update_kosdaq_stock_code():
+            st.success("코스닥 상장 종목 업데이트에 성공하였습니다.")
+            pass
+        else:
+            st.error("코스닥 상장 종목 업데이트에 실패하였습니다.")
             pass
         
     
