@@ -1,10 +1,8 @@
 config.json
 test.ipynb
 app.code-workspace
-modules/__pycache__/__init__.cpython-38.pyc
+modules/__pycache__/*.pyc
 .gitignore
-modules/KIS/__pycache__/__init__.cpython-38.pyc
-modules/__pycache__/config.cpython-38.pyc
-modules/KIS/__pycache__/public_api.cpython-38.pyc
-modules/KIS/__pycache__/stock.cpython-38.pyc
+modules/KIS/__pycache__/*.pyc
+modules/__pycache__/*.pyc
 modules/KIS/Data/*.csv

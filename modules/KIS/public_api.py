@@ -31,7 +31,7 @@ class Public_API:
             self._APP_SECRET = self.CONFIG["UserConfig"]["APP_SECRET"]
             self.auth_result = self.접근토큰발급()
         else:
-            raise Exception("config.json 파일이 존재하지 않습니다.")
+            raise Exception("config.json 파일이 존재하지 않습니다. init_KEY() 함수를 사용하여 config.json 파일을 생성해주세요.")
         
     def 접근토큰발급(self):
         if self._APP_KEY == "" or self._APP_SECRET == "":
