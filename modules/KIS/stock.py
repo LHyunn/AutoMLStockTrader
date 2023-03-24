@@ -6,12 +6,13 @@ import zipfile
 import os
 import pandas as pd
 from glob import glob
+base_dir = "/app/modules/KIS/Data"
 
 def update_kospi_stock_code(verbose=False):
     if os.path.exists(f"/app/modules/KIS/Data/kospi_stock_info_{datetime.datetime.now().strftime('%Y%m%d')}.csv"):
         return True
     else:
-        base_dir = "/app/modules/KIS/Data"
+        
         ssl._create_default_https_context = ssl._create_unverified_context
         urllib.request.urlretrieve("https://new.real.download.dws.co.kr/common/master/kospi_code.mst.zip",
                                 base_dir + "/kospi_code.zip")
@@ -184,4 +185,17 @@ def get_stock_list():
     kospi_stock_info = pd.read_csv(kospi_stock_info_file, encoding="utf-8")
     code_list = list(kosdaq_stock_info["단축코드"]) + list(kospi_stock_info["단축코드"])
     return code_list
+
+def get_listing_date(stock_code):
+    kosdaq_data = pd.read_csv(base_dir + f"/kosdaq_stock_info_{datetime.datetime.now().strftime('%Y%m%d')}.csv", encoding="utf-8")
+    kosdaq_data = kosdaq_data[["단축코드", "주식 상장 일자"]]
+    kosdaq_data = kosdaq_data.rename(columns={"주식 상장 일자": "상장일자"})
+    kospi_data = pd.read_csv(base_dir + f"/kospi_stock_info_{datetime.datetime.now().strftime('%Y%m%d')}.csv", encoding="utf-8")
+    kospi_data = kospi_data[["단축코드", "상장일자"]]
+    listing_date = pd.concat([kosdaq_data, kospi_data])
+    listing_date = listing_date[listing_date["단축코드"] == stock_code]
+    listing_date = listing_date["상장일자"].values[0]
+    return listing_date
+    
+    
     
