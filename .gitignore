@@ -1,5 +1,5 @@
 config.json
-test.ipynb
+
 app.code-workspace
 modules/__pycache__/*.pyc
 .gitignore
