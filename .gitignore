@@ -8,3 +8,4 @@ modules/__pycache__/*.pyc
 modules/KIS/Data/*.csv
 modules/KIS/Data/Date_list.pkl
 *.ipynb
+modules/KIS/Data/stock_price/*.csv
