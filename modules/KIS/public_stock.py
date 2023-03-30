@@ -177,13 +177,26 @@ def update_kosdaq_stock_code(verbose=False):
         df.to_csv(base_dir + f"/kosdaq_stock_info_{datetime.datetime.now().strftime('%Y%m%d')}.csv", index=False, encoding='utf-8')
         return True
     
-def get_stock_list():
+def get_all_stock_list():
     file_list = glob("/app/modules/KIS/Data/*.csv")
     kosdaq_stock_info_file = [file for file in file_list if "kosdaq" in file][0]
     kospi_stock_info_file = [file for file in file_list if "kospi" in file][0]
     kosdaq_stock_info = pd.read_csv(kosdaq_stock_info_file, encoding="utf-8")
     kospi_stock_info = pd.read_csv(kospi_stock_info_file, encoding="utf-8")
     code_list = list(kosdaq_stock_info["단축코드"]) + list(kospi_stock_info["단축코드"])
+    return code_list
+
+def get_market_stock_list(market = "KOSPI"):
+    file_list = glob("/app/modules/KIS/Data/*.csv")
+    if market == "KOSPI":
+        stock_info_file = [file for file in file_list if "kospi" in file][0]
+    elif market == "KOSDAQ":
+        stock_info_file = [file for file in file_list if "kosdaq" in file][0]
+    stock_info = pd.read_csv(stock_info_file, encoding="utf-8")
+    code_list = list(stock_info["단축코드"])
+    #숫자 6자리만
+    code_list = [code for code in code_list if len(str(code)) == 6]
+    code_list = [code for code in code_list if code.isdigit()]
     return code_list
 
 def get_listing_date(stock_code):

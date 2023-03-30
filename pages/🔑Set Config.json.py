@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.figure_factory as ff
 import plotly.graph_objects as go
 import plotly.express as px
-from modules.KIS import public_api, stock, auth
+from modules.KIS import public_api, public_stock, auth
 import FinanceDataReader as fdr
 
 st.markdown("# 🔑Set Config.json")

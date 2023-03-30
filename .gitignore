@@ -11,3 +11,5 @@ modules/KIS/Data/Date_list.pkl
 modules/KIS/Data/stock_price/*.csv
 Database/stock_price/*.csv
 Database/stock_price.zip
+modules/stock/__pycache__/*.pyc
+
