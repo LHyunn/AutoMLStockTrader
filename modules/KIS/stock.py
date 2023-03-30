@@ -196,6 +196,19 @@ def get_listing_date(stock_code):
     listing_date = listing_date[listing_date["단축코드"] == stock_code]
     listing_date = listing_date["상장일자"].values[0]
     return listing_date
+
+def get_stock_name(stock_code):
+    kosdaq_data = pd.read_csv(base_dir + f"/kosdaq_stock_info_{datetime.datetime.now().strftime('%Y%m%d')}.csv", encoding="utf-8")
+    kosdaq_data = kosdaq_data[["단축코드", "한글종목명"]]
+    kosdaq_data = kosdaq_data.rename(columns={"한글종목명": "종목명"})
+    kospi_data = pd.read_csv(base_dir + f"/kospi_stock_info_{datetime.datetime.now().strftime('%Y%m%d')}.csv", encoding="utf-8")
+    kospi_data = kospi_data[["단축코드", "한글명"]]
+    kospi_data = kospi_data.rename(columns={"한글명": "종목명"})
+    stock_name = pd.concat([kosdaq_data, kospi_data])
+    stock_name = stock_name[stock_name["단축코드"] == stock_code]
+    stock_name = stock_name["종목명"].values[0]
+    return stock_name
+    
     
     
     
