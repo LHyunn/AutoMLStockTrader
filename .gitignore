@@ -5,11 +5,8 @@ modules/__pycache__/*.pyc
 .gitignore
 modules/KIS/__pycache__/*.pyc
 modules/__pycache__/*.pyc
-modules/KIS/Data/*.csv
-modules/KIS/Data/Date_list.pkl
+modules/KIS/Data/*
 *.ipynb
-modules/KIS/Data/stock_price/*.csv
-Database/stock_price/*.csv
-Database/stock_price.zip
 modules/stock/__pycache__/*.pyc
 
+Database/*
