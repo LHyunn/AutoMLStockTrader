@@ -9,4 +9,4 @@ modules/KIS/Data/*
 *.ipynb
 modules/stock/__pycache__/*.pyc
 
-Database/*
+Data/*

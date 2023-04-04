@@ -6,28 +6,26 @@ import zipfile
 import os
 import pandas as pd
 from glob import glob
-base_dir = "/app/modules/KIS/Data"
-
-def update_kospi_stock_code(verbose=False):
-    if os.path.exists(f"/app/modules/KIS/Data/kospi_stock_info_{datetime.datetime.now().strftime('%Y%m%d')}.csv"):
-        return True
+def update_kospi_stock_code():
+    if os.path.exists(f"/app/Data/KRX/kospi_stock_info.csv"):
+        file_time = datetime.datetime.fromtimestamp(os.path.getmtime(f"/app/Data/KRX/kospi_stock_info.csv"))
+        if file_time.date() == datetime.datetime.today().date():
+            return file_time.strftime('%Y-%m-%d %H:%M:%S')
     else:
-        
         ssl._create_default_https_context = ssl._create_unverified_context
         urllib.request.urlretrieve("https://new.real.download.dws.co.kr/common/master/kospi_code.mst.zip",
-                                base_dir + "/kospi_code.zip")
-
-        os.chdir(base_dir)
-        if (verbose): print(f"change directory to {base_dir}")
+                                "/app/Data/KRX/kospi_code.zip")
+        
+        os.chdir("/app/Data/KRX")
         kospi_zip = zipfile.ZipFile('kospi_code.zip')
         kospi_zip.extractall()
         kospi_zip.close()
-        if os.path.exists("kospi_code.zip"):
-            os.remove("kospi_code.zip")
+        if os.path.exists("/app/Data/KRX/kospi_code.zip"):
+            os.remove("/app/Data/KRX/kospi_code.zip")
             
-        file_name = base_dir + "/kospi_code.mst"
-        tmp_fil1 = base_dir + "/kospi_code_part1.tmp"
-        tmp_fil2 = base_dir + "/kospi_code_part2.tmp"
+        file_name = "/app/Data/KRX/kospi_code.mst"
+        tmp_fil1 = "/app/Data/KRX/kospi_code_part1.tmp"
+        tmp_fil2 = "/app/Data/KRX/kospi_code_part2.tmp"
         wf1 = open(tmp_fil1, mode="w")
         wf2 = open(tmp_fil2, mode="w")
 
@@ -89,30 +87,31 @@ def update_kospi_stock_code(verbose=False):
         os.remove(tmp_fil1)
         os.remove(tmp_fil2)
         os.remove(file_name)
-        df.to_csv(base_dir + f"/kospi_stock_info_{datetime.datetime.now().strftime('%Y%m%d')}.csv", index=False, encoding='utf-8')
-        return True
+        df.to_csv(f"/app/Data/KRX/kospi_stock_info.csv", index=False, encoding='utf-8')
+        file_time = datetime.datetime.fromtimestamp(os.path.getmtime(f"/app/Data/KRX/kospi_stock_info.csv")).strftime('%Y-%m-%d %H:%M:%S')
+        return file_time
     
     
 def update_kosdaq_stock_code(verbose=False):
-    if os.path.exists(f"/app/modules/KIS/Data/kosdaq_stock_info_{datetime.datetime.now().strftime('%Y%m%d')}.csv"):
-        return True
+    if os.path.exists(f"/app/Data/KRX/kosdaq_stock_info.csv"):
+        file_time = datetime.datetime.fromtimestamp(os.path.getmtime(f"/app/Data/KRX/kospi_stock_info.csv"))
+        if file_time.date() == datetime.datetime.today().date():
+            return file_time.strftime('%Y-%m-%d %H:%M:%S')
     else:
-        base_dir = "/app/modules/KIS/Data"
         ssl._create_default_https_context = ssl._create_unverified_context
         urllib.request.urlretrieve("https://new.real.download.dws.co.kr/common/master/kosdaq_code.mst.zip",
-                                base_dir + "/kosdaq_code.zip")
-
-        os.chdir(base_dir)
-        if (verbose): print(f"change directory to {base_dir}")
+                                "/app/Data/KRX/kosdaq_code.zip")
+        
+        os.chdir("/app/Data/KRX")
         kosdaq_zip = zipfile.ZipFile('kosdaq_code.zip')
         kosdaq_zip.extractall()
         kosdaq_zip.close()
-        if os.path.exists("kosdaq_code.zip"):
-            os.remove("kosdaq_code.zip")
+        if os.path.exists("/app/Data/KRX/kosdaq_code.zip"):
+            os.remove("/app/Data/KRX/kosdaq_code.zip")
             
-        file_name = base_dir + "/kosdaq_code.mst"
-        tmp_fil1 = base_dir + "/kosdaq_code_part1.tmp"
-        tmp_fil2 = base_dir + "/kosdaq_code_part2.tmp"
+        file_name = "/app/Data/KRX/kosdaq_code.mst"
+        tmp_fil1 = "/app/Data/KRX/kosdaq_code_part1.tmp"
+        tmp_fil2 = "/app/Data/KRX/kosdaq_code_part2.tmp"
         wf1 = open(tmp_fil1, mode="w")
         wf2 = open(tmp_fil2, mode="w")
 
@@ -174,53 +173,83 @@ def update_kosdaq_stock_code(verbose=False):
         os.remove(tmp_fil1)
         os.remove(tmp_fil2)
         os.remove(file_name)
-        df.to_csv(base_dir + f"/kosdaq_stock_info_{datetime.datetime.now().strftime('%Y%m%d')}.csv", index=False, encoding='utf-8')
-        return True
+        df.to_csv(f"/app/Data/KRX/kosdaq_stock_info.csv", index=False, encoding='utf-8')
+        file_time = datetime.datetime.fromtimestamp(os.path.getmtime(f"/app/Data/KRX/kosdaq_stock_info.csv")).strftime('%Y-%m-%d %H:%M:%S')
+        #수정된 시간을 기록한다.
+        return file_time
     
-def get_all_stock_list():
-    file_list = glob("/app/modules/KIS/Data/*.csv")
-    kosdaq_stock_info_file = [file for file in file_list if "kosdaq" in file][0]
-    kospi_stock_info_file = [file for file in file_list if "kospi" in file][0]
-    kosdaq_stock_info = pd.read_csv(kosdaq_stock_info_file, encoding="utf-8")
-    kospi_stock_info = pd.read_csv(kospi_stock_info_file, encoding="utf-8")
-    code_list = list(kosdaq_stock_info["단축코드"]) + list(kospi_stock_info["단축코드"])
-    return code_list
-
-def get_market_stock_list(market = "KOSPI"):
-    file_list = glob("/app/modules/KIS/Data/*.csv")
+def return_only_stock_df():
+    # 증권그룹구분코드가 DR, EW, SW, SR, BC, FE를 제외한 것들만 가져온다. 
+    # ST:주권 MF:증권투자회사 RT:부동산투자회사    
+    # SC:선박투자회사 IF:사회간접자본투융자회사    
+    # DR:주식예탁증서 EW:ELW EF:ETF                
+    # SW:신주인수권증권 SR:신주인수권증서          
+    # BC:수익증권 FE:해외ETF FS:외국주권
+    # 우선주 코드가 0인 것만 가져온다.
+    kosdaq_stock_info_file = "/app/Data/KRX/kosdaq_stock_info.csv"
+    kosdaq_stock_info_df = pd.read_csv(kosdaq_stock_info_file, encoding="utf-8")
+    kosdaq_stock_info_df = kosdaq_stock_info_df[kosdaq_stock_info_df["증권그룹구분코드"].isin(["DR", "EW", "EF", "SW", "SR", "BC", "FE", "EN", "IF", "MF"]) == False]
+    kosdaq_stock_info_df = kosdaq_stock_info_df[kosdaq_stock_info_df["우선주 구분 코드"] == 0]
+    kosdaq_stock_info_df = kosdaq_stock_info_df[kosdaq_stock_info_df["기업인수목적회사여부"] == "N"]
+    
+    kospi_stock_info_file = "/app/Data/KRX/kospi_stock_info.csv"
+    kospi_stock_info_df = pd.read_csv(kospi_stock_info_file, encoding="utf-8")
+    kospi_stock_info_df = kospi_stock_info_df[kospi_stock_info_df["그룹코드"].isin(["DR", "EW", "EF", "SW", "SR", "BC", "FE", "EN", "IF", "MF"]) == False]
+    kospi_stock_info_df = kospi_stock_info_df[kospi_stock_info_df["우선주"] == 0]
+    return kosdaq_stock_info_df, kospi_stock_info_df
+    
+def get_stock_list(market = "ALL"):
+    kosdaq_stock_info_df, kospi_stock_info_df = return_only_stock_df()
     if market == "KOSPI":
-        stock_info_file = [file for file in file_list if "kospi" in file][0]
+        code_list = list(kospi_stock_info_df["단축코드"])
     elif market == "KOSDAQ":
-        stock_info_file = [file for file in file_list if "kosdaq" in file][0]
-    stock_info = pd.read_csv(stock_info_file, encoding="utf-8")
-    code_list = list(stock_info["단축코드"])
-    #숫자 6자리만
-    code_list = [code for code in code_list if len(str(code)) == 6]
-    code_list = [code for code in code_list if code.isdigit()]
+        code_list = list(kosdaq_stock_info_df["단축코드"])
+    else:
+        code_list = list(kosdaq_stock_info_df["단축코드"]) + list(kospi_stock_info_df["단축코드"])
     return code_list
 
-def get_listing_date(stock_code):
-    kosdaq_data = pd.read_csv(base_dir + f"/kosdaq_stock_info_{datetime.datetime.now().strftime('%Y%m%d')}.csv", encoding="utf-8")
+
+
+def get_listing_date(stock_code=None):
+    kosdaq_data, kospi_data = return_only_stock_df()
     kosdaq_data = kosdaq_data[["단축코드", "주식 상장 일자"]]
     kosdaq_data = kosdaq_data.rename(columns={"주식 상장 일자": "상장일자"})
-    kospi_data = pd.read_csv(base_dir + f"/kospi_stock_info_{datetime.datetime.now().strftime('%Y%m%d')}.csv", encoding="utf-8")
     kospi_data = kospi_data[["단축코드", "상장일자"]]
     listing_date = pd.concat([kosdaq_data, kospi_data])
-    listing_date = listing_date[listing_date["단축코드"] == stock_code]
-    listing_date = listing_date["상장일자"].values[0]
-    return listing_date
+    if stock_code is None:
+        return listing_date
+    else:
+        listing_date = listing_date[listing_date["단축코드"] == stock_code]
+        listing_date = listing_date["상장일자"].values[0]
+        return listing_date
 
-def get_stock_name(stock_code):
-    kosdaq_data = pd.read_csv(base_dir + f"/kosdaq_stock_info_{datetime.datetime.now().strftime('%Y%m%d')}.csv", encoding="utf-8")
+def get_stock_name(stock_code=None):
+    kosdaq_data, kospi_data = return_only_stock_df()
     kosdaq_data = kosdaq_data[["단축코드", "한글종목명"]]
     kosdaq_data = kosdaq_data.rename(columns={"한글종목명": "종목명"})
-    kospi_data = pd.read_csv(base_dir + f"/kospi_stock_info_{datetime.datetime.now().strftime('%Y%m%d')}.csv", encoding="utf-8")
     kospi_data = kospi_data[["단축코드", "한글명"]]
     kospi_data = kospi_data.rename(columns={"한글명": "종목명"})
     stock_name = pd.concat([kosdaq_data, kospi_data])
-    stock_name = stock_name[stock_name["단축코드"] == stock_code]
-    stock_name = stock_name["종목명"].values[0]
-    return stock_name
+    if stock_code is None:
+        return stock_name
+    else:
+        stock_name = stock_name[stock_name["단축코드"] == stock_code]
+        stock_name = stock_name["종목명"].values[0]
+        return stock_name
+
+def get_stock_market_cap(stock_code=None):
+    
+    kosdaq_data, kospi_data = return_only_stock_df()
+    kosdaq_data = kosdaq_data[["단축코드", "전일기준 시가총액 (억)"]]
+    kosdaq_data = kosdaq_data.rename(columns={"전일기준 시가총액 (억)": "시가총액"})
+    kospi_data = kospi_data[["단축코드", "시가총액"]]
+    market_cap = pd.concat([kosdaq_data, kospi_data])
+    if stock_code is None:
+        return market_cap
+    else:
+        market_cap = market_cap[market_cap["단축코드"] == stock_code]
+        market_cap = market_cap["시가총액"].values[0]
+        return market_cap
     
     
     

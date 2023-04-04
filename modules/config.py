@@ -26,19 +26,12 @@ def init_session():
             st.error("KIS 인증에 실패하였습니다.")
             pass
         
-        if public_stock.update_kospi_stock_code():
-            st.success("코스피 상장 종목 업데이트에 성공하였습니다.")
-            pass
-        else:
-            st.error("코스피 상장 종목 업데이트에 실패하였습니다.")
-            pass
+        kosdaq_update_time = public_stock.update_kosdaq_stock_code()
+        kospi_update_time = public_stock.update_kospi_stock_code()
+        st.success(f"KOSPI 마지막 업데이트 시간 : {kospi_update_time}")
+        st.success(f"KOSDAQ 마지막 업데이트 시간 : {kosdaq_update_time}")
         
-        if public_stock.update_kosdaq_stock_code():
-            st.success("코스닥 상장 종목 업데이트에 성공하였습니다.")
-            pass
-        else:
-            st.error("코스닥 상장 종목 업데이트에 실패하였습니다.")
-            pass
+        
         
     
     

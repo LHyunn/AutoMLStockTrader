@@ -15,7 +15,7 @@ if 'data' not in st.session_state:
 
 
 st.markdown("# ♟️Advanced Chart")
-stock_code_list = os.listdir('/app/Database/stock_price/')
+stock_code_list = os.listdir('/app/Data/stock_price/')
 stock_code_list = [x.replace('.csv', '') for x in stock_code_list]
 stock_code_list.sort()
 notice = st.expander("📌주의사항")

@@ -10,7 +10,7 @@ from modules.KIS import public_stock
 class StockPriceDataframe():
     def __init__(self, stock_code, **kwargs):
         self.stock_code = stock_code
-        self.stock_df = pd.read_csv(f'/app/Database/stock_price/{stock_code}.csv').set_index('Date').sort_values(by='Date')
+        self.stock_df = pd.read_csv(f'/app/Data/stock_price/{stock_code}/{stock_code}_Daily_Price.csv').set_index('Date').sort_values(by='Date')
         self.stock_name = public_stock.get_stock_name(stock_code)
         self.listed_date = public_stock.get_listing_date(stock_code)
         
