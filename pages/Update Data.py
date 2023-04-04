@@ -6,12 +6,10 @@ import os
 
 
 API = public_api.Public_API()
-st.title("주가 정보, 재무 정보 업데이트")
-st.write("## 주가 정보 업데이트")
-st.write("### 주가 정보 업데이트를 위해 아래의 버튼을 눌러주세요.")
+st.write("### 주가 정보 업데이트")
 button = st.button("주가 정보 업데이트")
 if button:
-    st.write("### 주가 정보 업데이트를 시작합니다.")
+    st.write("### 주가 정보 업데이트 중")
     progress = st.empty()
     progress.progress(0)
     stock_list = public_stock.get_stock_list()
@@ -27,6 +25,11 @@ if button:
             origin_stock_info = pd.read_csv(f"/app/Data/stock_price/{stock_code}/{stock_code}_Daily_Price.csv", index_col=0)
             last_date = origin_stock_info.index[-1]
             last_date = (datetime.datetime.strptime(str(last_date), "%Y-%m-%d") - datetime.timedelta(days=7)).strftime("%Y%m%d")
+        else:
+            os.makedirs(f"/app/Data/stock_price/{stock_code}", exist_ok=True)
+            origin_stock_info = pd.DataFrame(columns=["Stock_code","Date", "Open", "High", "Low", "Close", "Volume", "Amount", "Change"])
+            last_date = "19880101"
+            
             
         while datetime.datetime.strptime(str_today, "%Y%m%d") > datetime.datetime.strptime(str(last_date), "%Y%m%d"):
             print(first_date, str_today)
