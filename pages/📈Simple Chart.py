@@ -16,7 +16,7 @@ stock_code = st.selectbox("종목코드", stock_code_list)
 stock_name = public_stock.get_stock_name(stock_code)
 if stock_code is not None:
     st.markdown(f"### {stock_name}({stock_code})")
-    stock_df = pd.read_csv(f'/app/Data/stock_price/{stock_code}_Daily_Price.csv')
+    stock_df = pd.read_csv(f'/app/Data/stock_price/{stock_code}/{stock_code}_Daily_Price.csv')
     stock_df = stock_df.sort_values(by='Date')
     stock_df = stock_df.set_index('Date')
     start_date, end_date = st.select_slider("기간 선택", options=stock_df.index, value=(stock_df.index[0], stock_df.index[-1]))

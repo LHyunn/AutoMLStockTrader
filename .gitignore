@@ -10,3 +10,5 @@ modules/KIS/Data/*
 modules/stock/__pycache__/*.pyc
 
 Data/*
+ysh/*
+Anaconda3-2023.03-Linux-x86_64.sh
