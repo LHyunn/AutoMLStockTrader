@@ -8,6 +8,7 @@ from modules.KIS import public_api, public_stock, auth
 from modules.stock import stock_indicator
 import os
 import talib
+import numpy as np
 
 if 'data' not in st.session_state:
     data = pd.DataFrame({'colA':[],'colB':[],'colC':[],'colD':[]})
@@ -34,6 +35,7 @@ num_rows = col2.slider('보조지표 수', min_value=0,max_value=20,value=1)
 if stock_code is not None:
     stock_info = stock_indicator.StockPriceDataframe(stock_code)
     stock_df = stock_info.stock_df
+    
     form = st.form(key='my_form')
     
     expander = form.expander("보조지표 선택")
@@ -69,6 +71,23 @@ if stock_code is not None:
             stock_info.calc_indicators(key = value['key'], param1 = value['param1'], param2 = value['param2'], param3 = value['param3'])
         stock_df = stock_info.stock_df
         stock_df.dropna(inplace=True)
+        df_download = stock_info.stock_df.copy()
+        origin_df = stock_df[['Open', 'High', 'Low', 'Close', 'Volume']]
+        #df_download의 값들을 이전 행에 대한 변화율로 변경
+        df_download = df_download.pct_change(periods=1)
+        #column명 변경
+        df_download.columns = [f"{x}_change" for x in df_download.columns]
+        #컬럼 제거
+        df_download.drop(['Stock_code_change', 'Change_change'], axis=1, inplace=True)
+        #두개의 dataframe을 합침
+        df_download = pd.concat([origin_df, df_download], axis=1)
+        #결측치 제거    
+        df_download.dropna(inplace=True)
+        #0으로 나누는 경우가 있어서 inf가 생기는 경우가 있음
+        df_download = df_download.replace([np.inf, -np.inf], np.nan)
+        #결측치 제거
+        
+        st.download_button(label="Download", data=df_download.to_csv().encode('utf-8'), file_name=f"{stock_code}.csv", mime="text/csv")
         #####after calculate indicator
         stock_df = stock_df.loc[start_date:end_date]
         fig = make_subplots(rows=15, cols=1, shared_xaxes=True, vertical_spacing=0.01)
@@ -144,5 +163,6 @@ if stock_code is not None:
         
         fig = fig.update_layout(height=3000*now_row)
         st.plotly_chart(fig, use_container_width=True)
+        
         
         

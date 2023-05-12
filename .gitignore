@@ -1,14 +1,20 @@
 config.json
 
 app.code-workspace
-modules/__pycache__/*.pyc
+
 .gitignore
-modules/KIS/__pycache__/*.pyc
-modules/__pycache__/*.pyc
+
+*.pyc
 modules/KIS/Data/*
 *.ipynb
-modules/stock/__pycache__/*.pyc
+
 
 Data/*
 ysh/*
 Anaconda3-2023.03-Linux-x86_64.sh
+
+models/*
+.DS_Store
+*.png
+*.log
+*.json
