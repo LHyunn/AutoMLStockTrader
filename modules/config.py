@@ -1,6 +1,7 @@
 import streamlit as st
 from .KIS import public_api, public_stock
 import datetime
+import os
 
 
 def set_config():
