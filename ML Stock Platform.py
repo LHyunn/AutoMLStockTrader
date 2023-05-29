@@ -9,7 +9,8 @@ from modules.KIS import *
 
 if __name__ == "__main__":
     config.set_config()
-    st.title("AutoML Stock Model Platform")
+    st.title("ML Stock Platform")
+    st.subheader("머신러닝을 이용한 주식 투자 플랫폼")
     config.init_session()
     
     

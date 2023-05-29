@@ -230,6 +230,7 @@ class ReinforcementLearner:
 
         # 학습에 대한 정보 초기화
         max_portfolio_value = 0
+        min_portfolio_value = 0
         epoch_win_cnt = 0
 
         # 에포크 반복
@@ -318,7 +319,7 @@ class ReinforcementLearner:
                 epoch_win_cnt += 1
 
             min_portfolio_value = min(
-                max_portfolio_value, self.agent.portfolio_value)
+                min_portfolio_value, self.agent.portfolio_value)
             if self.agent.portfolio_value > self.agent.initial_balance:
                 epoch_win_cnt += 1
             
