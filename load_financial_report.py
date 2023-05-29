@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 from tqdm import tqdm
-from modules import public_stock
+from modules.KIS import public_stock
 from natsort import natsorted
 from glob import glob
 import ray
